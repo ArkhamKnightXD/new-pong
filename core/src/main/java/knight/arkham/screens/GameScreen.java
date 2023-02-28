@@ -2,9 +2,11 @@ package knight.arkham.screens;
 
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -31,9 +33,8 @@ public class GameScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
 
     private final Viewport viewport;
-
-    private final Box2DDebugRenderer debugRenderer;
     private final World world;
+    private final TextureRegion[] scoreNumbers;
 
 
     public GameScreen() {
@@ -46,20 +47,41 @@ public class GameScreen extends ScreenAdapter {
 
         world.setContactListener(contactListener);
 
-        debugRenderer = new Box2DDebugRenderer();
-
         player = new Player(new Rectangle(490, 600, 16, 64), world);
         enemy = new Enemy(new Rectangle(1430,600, 16, 64), world);
         ball = new Ball(new Rectangle(1000,600, 32, 32), this);
 
-        topWall = new StaticStructure(new Rectangle(FULL_SCREEN_WIDTH,945, FULL_SCREEN_WIDTH, 32), world);
-        bottomWall = new StaticStructure(new Rectangle(FULL_SCREEN_WIDTH,340, FULL_SCREEN_WIDTH, 32), world);
+        topWall = new StaticStructure(new Rectangle(FULL_SCREEN_WIDTH,930, FULL_SCREEN_WIDTH, 64), world);
+        bottomWall = new StaticStructure(new Rectangle(FULL_SCREEN_WIDTH,350, FULL_SCREEN_WIDTH, 64), world);
 
         camera = new OrthographicCamera();
 
         viewport = new FitViewport(BOX2D_FULL_SCREEN_WIDTH, BOX2D_FULL_SCREEN_HEIGHT, camera);
 
         camera.position.set(BOX2D_FULL_SCREEN_WIDTH, BOX2D_FULL_SCREEN_HEIGHT, 0);
+
+        scoreNumbers = loadTextureSprite();
+    }
+
+    private TextureRegion[] loadTextureSprite(){
+
+        Texture textureToSplit = new Texture("images/numbers.png");
+
+        return TextureRegion.split(textureToSplit, textureToSplit.getWidth() / 10, textureToSplit.getHeight())[0];
+    }
+
+
+    private void drawScoreNumbers(SpriteBatch batch, int scoreNumber, float x, float y, float width, float heigth){
+
+        if (scoreNumber < 10)
+            batch.draw(scoreNumbers[scoreNumber], x, y, width, heigth);
+
+        else {
+
+            batch.draw(scoreNumbers[Integer.parseInt(("" + scoreNumber).substring(0, 1))], x, y, width, heigth);
+
+            batch.draw(scoreNumbers[Integer.parseInt(("" + scoreNumber).substring(1, 2))], x+20/PIXELS_PER_METER, y, width, heigth);
+        }
     }
 
 
@@ -92,9 +114,16 @@ public class GameScreen extends ScreenAdapter {
 
         game.batch.begin();
 
-//        game.font.draw(game.batch, String.valueOf(player.score),500, 600);
-
         topWall.draw(game.batch);
+
+//        El orden importa debido a que draw esta después de top-wall, este se renderizara encima de él y no detrás
+        drawScoreNumbers(game.batch, player.score, 500/PIXELS_PER_METER , 900/PIXELS_PER_METER,
+            48/PIXELS_PER_METER, 64/PIXELS_PER_METER);
+
+        drawScoreNumbers(game.batch, enemy.score, 1380/PIXELS_PER_METER , 900/PIXELS_PER_METER,
+            48/PIXELS_PER_METER, 64/PIXELS_PER_METER);
+
+
         bottomWall.draw(game.batch);
 
         player.draw(game.batch);
@@ -102,8 +131,6 @@ public class GameScreen extends ScreenAdapter {
         enemy.draw(game.batch);
 
         game.batch.end();
-
-        debugRenderer.render(world, camera.combined);
     }
 
     @Override

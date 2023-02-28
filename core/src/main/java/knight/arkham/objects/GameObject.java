@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import knight.arkham.helpers.Box2DBody;
 import knight.arkham.helpers.Box2DHelper;
 
@@ -15,13 +14,11 @@ import static knight.arkham.helpers.Constants.PIXELS_PER_METER;
 public abstract class GameObject {
 
     protected final Body body;
-    protected final Fixture fixture;
     private final Rectangle bounds;
     private final TextureRegion actualRegion;
 
     protected GameObject(Box2DBody gameObjectStructure, TextureRegion region) {
-        fixture =  Box2DHelper.createBody(gameObjectStructure);
-        body = fixture.getBody();
+        body = Box2DHelper.createBody(gameObjectStructure).getBody();
         bounds = gameObjectStructure.bounds;
         actualRegion = region;
     }
@@ -43,7 +40,7 @@ public abstract class GameObject {
         batch.draw(actualRegion, actualBounds.x, actualBounds.y, actualBounds.width, actualBounds.height);
     }
 
-    protected Vector2 getActualPixelsPosition() {
+    protected Vector2 getActualPosition() {
 
         return new Vector2(body.getPosition().x * PIXELS_PER_METER,body.getPosition().y * PIXELS_PER_METER);
     }

@@ -24,10 +24,7 @@ public class GameContactListener implements ContactListener {
                 gameScreen.getBall().incrementXVelocity();
             }
 
-            if (fixtureA.getUserData() == ContactType.ENEMY || fixtureB.getUserData() == ContactType.ENEMY) {
-                gameScreen.getBall().reverseVelocityX();
-                gameScreen.getBall().incrementXVelocity();
-            } else
+            else
                 gameScreen.getBall().reverseVelocityY();
         }
     }

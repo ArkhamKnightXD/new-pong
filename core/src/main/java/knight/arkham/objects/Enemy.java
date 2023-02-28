@@ -21,10 +21,11 @@ public class Enemy extends GameObject {
 
     public Enemy(Rectangle rectangle, World world) {
         super(
-            new Box2DBody(rectangle, BodyDef.BodyType.DynamicBody, 10, world, ContactType.ENEMY),
+            new Box2DBody(rectangle, BodyDef.BodyType.DynamicBody, 10, world, ContactType.PLAYER),
             new TextureRegion(new Texture("images/players.png"))
         );
-        speed = 8;
+        speed = 10;
+        score = 0;
     }
 
     public void update() {

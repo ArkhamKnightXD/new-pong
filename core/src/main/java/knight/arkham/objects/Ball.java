@@ -29,7 +29,7 @@ public class Ball extends GameObject {
         );
 
         velocity = new Vector2(getRandomDirection(), getRandomDirection());
-        speed = 8;
+        speed = 6;
         actualGameScreen = gameScreen;
     }
 
@@ -48,12 +48,12 @@ public class Ball extends GameObject {
 
         body.setLinearVelocity(velocity.x * speed, velocity.y * speed);
 
-        if (getActualPixelsPosition().x > 1450){
+        if (getActualPosition().x > 1450){
             actualGameScreen.getPlayer().score += 1;
             resetBallPosition();
         }
 
-        if (getActualPixelsPosition().x < 470){
+        if (getActualPosition().x < 470){
             actualGameScreen.getEnemy().score += 1;
             resetBallPosition();
         }
