@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import knight.arkham.screens.GameScreen;
+import knight.arkham.screens.MainMenuScreen;
 
 public class Pong extends Game {
     public static Pong INSTANCE;
@@ -29,7 +29,7 @@ public class Pong extends Game {
         batch = new SpriteBatch();
         font = new BitmapFont();
 
-        setScreen(new GameScreen());
+        setScreen(new MainMenuScreen());
     }
 
 

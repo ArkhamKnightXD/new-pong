@@ -23,13 +23,13 @@ public abstract class GameObject {
         actualRegion = region;
     }
 
-    private Rectangle getBoundsWithPPMCalculation(){
+    private Rectangle getBoundsWithPPMCalculation() {
 
         return new Rectangle(
-                body.getPosition().x - (bounds.width / 2 / PIXELS_PER_METER),
-                body.getPosition().y - (bounds.height / 2 / PIXELS_PER_METER),
-                bounds.width / PIXELS_PER_METER,
-                bounds.height / PIXELS_PER_METER
+            body.getPosition().x - (bounds.width / 2 / PIXELS_PER_METER),
+            body.getPosition().y - (bounds.height / 2 / PIXELS_PER_METER),
+            bounds.width / PIXELS_PER_METER,
+            bounds.height / PIXELS_PER_METER
         );
     }
 
@@ -42,8 +42,10 @@ public abstract class GameObject {
 
     protected Vector2 getActualPosition() {
 
-        return new Vector2(body.getPosition().x * PIXELS_PER_METER,body.getPosition().y * PIXELS_PER_METER);
+        return new Vector2(body.getPosition().x * PIXELS_PER_METER, body.getPosition().y * PIXELS_PER_METER);
     }
 
-    public Texture getSprite() {return actualRegion.getTexture();}
+    public Texture getSprite() {
+        return actualRegion.getTexture();
+    }
 }

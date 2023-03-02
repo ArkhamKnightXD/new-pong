@@ -1,6 +1,8 @@
 package knight.arkham.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -35,6 +37,7 @@ public class GameScreen extends ScreenAdapter {
     private final Viewport viewport;
     private final World world;
     private final TextureRegion[] scoreNumbers;
+    private final Music gameMusic;
 
 
     public GameScreen() {
@@ -61,6 +64,12 @@ public class GameScreen extends ScreenAdapter {
         camera.position.set(BOX2D_FULL_SCREEN_WIDTH, BOX2D_FULL_SCREEN_HEIGHT, 0);
 
         scoreNumbers = loadTextureSprite();
+
+        gameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/epic.wav"));
+
+        gameMusic.play();
+        gameMusic.setLooping(true);
+        gameMusic.setVolume(0.5f);
     }
 
     private TextureRegion[] loadTextureSprite(){
@@ -71,16 +80,22 @@ public class GameScreen extends ScreenAdapter {
     }
 
 
-    private void drawScoreNumbers(SpriteBatch batch, int scoreNumber, float x, float y, float width, float heigth){
+    private void drawScoreNumbers(SpriteBatch batch, int scoreNumber, float x, float y){
+
+        final float width = 48;
+        final float height = 64;
 
         if (scoreNumber < 10)
-            batch.draw(scoreNumbers[scoreNumber], x, y, width, heigth);
+            batch.draw(scoreNumbers[scoreNumber], x/PIXELS_PER_METER, y/PIXELS_PER_METER,
+                width/PIXELS_PER_METER , height/PIXELS_PER_METER);
 
         else {
 
-            batch.draw(scoreNumbers[Integer.parseInt(("" + scoreNumber).substring(0, 1))], x, y, width, heigth);
+            batch.draw(scoreNumbers[Integer.parseInt(("" + scoreNumber).substring(0, 1))], x/PIXELS_PER_METER,
+                y/PIXELS_PER_METER , width/PIXELS_PER_METER , height/PIXELS_PER_METER);
 
-            batch.draw(scoreNumbers[Integer.parseInt(("" + scoreNumber).substring(1, 2))], x+20/PIXELS_PER_METER, y, width, heigth);
+            batch.draw(scoreNumbers[Integer.parseInt(("" + scoreNumber).substring(1, 2))], x/PIXELS_PER_METER +20/PIXELS_PER_METER,
+                y/PIXELS_PER_METER, width/PIXELS_PER_METER, height/PIXELS_PER_METER);
         }
     }
 
@@ -99,7 +114,18 @@ public class GameScreen extends ScreenAdapter {
         enemy.update();
         ball.update();
 
+//        setGameOverScreen();
+
         game.manageExitTheGame();
+    }
+
+    private void setGameOverScreen() {
+
+        if (player.score > 1)
+            game.setScreen(new MainMenuScreen());
+
+        else if (enemy.score > 1)
+            game.setScreen(new MainMenuScreen());
     }
 
 
@@ -117,12 +143,9 @@ public class GameScreen extends ScreenAdapter {
         topWall.draw(game.batch);
 
 //        El orden importa debido a que draw esta después de top-wall, este se renderizara encima de él y no detrás
-        drawScoreNumbers(game.batch, player.score, 500/PIXELS_PER_METER , 900/PIXELS_PER_METER,
-            48/PIXELS_PER_METER, 64/PIXELS_PER_METER);
+        drawScoreNumbers(game.batch, player.score, 500 , 900);
 
-        drawScoreNumbers(game.batch, enemy.score, 1380/PIXELS_PER_METER , 900/PIXELS_PER_METER,
-            48/PIXELS_PER_METER, 64/PIXELS_PER_METER);
-
+        drawScoreNumbers(game.batch, enemy.score, 1380 , 900);
 
         bottomWall.draw(game.batch);
 
@@ -147,6 +170,7 @@ public class GameScreen extends ScreenAdapter {
         player.getSprite().dispose();
         ball.getSprite().dispose();
         enemy.getSprite().dispose();
+        gameMusic.dispose();
     }
 
     public Ball getBall() {return ball;}

@@ -21,8 +21,8 @@ public class Player extends GameObject {
 
     public Player(Rectangle rectangle, World world) {
         super(
-                new Box2DBody(rectangle, BodyDef.BodyType.DynamicBody,10, world, ContactType.PLAYER),
-                new TextureRegion(new Texture("images/players.png"))
+            new Box2DBody(rectangle, BodyDef.BodyType.DynamicBody, 10, world, ContactType.PLAYER),
+            new TextureRegion(new Texture("images/players.png"))
         );
         speed = 10;
         score = 0;
