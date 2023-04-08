@@ -1,6 +1,7 @@
 package knight.arkham.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import knight.arkham.Pong;
 import knight.arkham.helpers.GameContactListener;
+import knight.arkham.helpers.GameDataHelper;
 import knight.arkham.objects.Ball;
 import knight.arkham.objects.Enemy;
 import knight.arkham.objects.Player;
@@ -39,8 +41,10 @@ public class GameScreen extends ScreenAdapter {
     private final TextureRegion[] scoreNumbers;
     private final Music gameMusic;
 
+    public static final String GAME_DATA_FILENAME = "pong-players";
 
-    public GameScreen() {
+
+    public GameScreen(boolean isNewGame) {
 
         game = Pong.INSTANCE;
 
@@ -52,6 +56,14 @@ public class GameScreen extends ScreenAdapter {
 
         player = new Player(new Rectangle(490, 600, 16, 64), world);
         enemy = new Enemy(new Rectangle(1430,600, 16, 64), world);
+
+        if (!isNewGame){
+            Vector2 playerScores = GameDataHelper.loadPlayerData(GAME_DATA_FILENAME);
+
+            player.score = (int) playerScores.x;
+            enemy.score = (int) playerScores.y;
+        }
+
         ball = new Ball(new Rectangle(1000,600, 32, 32), this);
 
         topWall = new StaticStructure(new Rectangle(FULL_SCREEN_WIDTH,930, FULL_SCREEN_WIDTH, 64), world);
@@ -114,17 +126,25 @@ public class GameScreen extends ScreenAdapter {
         enemy.update();
         ball.update();
 
-//        setGameOverScreen();
+        setGameOverScreen();
+
+        manageGameData();
 
         game.manageExitTheGame();
     }
 
+    private void manageGameData() {
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F2))
+            GameDataHelper.savePlayerData("Player1: " + player.score+ "\n" + "Player2: " + enemy.score, GAME_DATA_FILENAME);
+    }
+
     private void setGameOverScreen() {
 
-        if (player.score > 1)
+        if (player.score > 10)
             game.setScreen(new MainMenuScreen());
 
-        else if (enemy.score > 1)
+        else if (enemy.score > 10)
             game.setScreen(new MainMenuScreen());
     }
 

@@ -26,12 +26,16 @@ public class MainMenuScreen extends ScreenAdapter {
 
         game.font.draw(game.batch, "Welcome to Pong!!! ", MID_SCREEN_WIDTH-100, MID_SCREEN_HEIGHT);
 
-        game.font.draw(game.batch, "Press Enter To Play", MID_SCREEN_WIDTH-100, MID_SCREEN_HEIGHT-25);
+        game.font.draw(game.batch, "Press Enter For New Game", MID_SCREEN_WIDTH-100, MID_SCREEN_HEIGHT-25);
+        game.font.draw(game.batch, "Press Space For Load Game", MID_SCREEN_WIDTH-100, MID_SCREEN_HEIGHT-50);
 
         game.batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER))
-            game.setScreen(new GameScreen());
+            game.setScreen(new GameScreen(true));
+
+        else if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
+            game.setScreen(new GameScreen(false));
     }
 
     @Override
