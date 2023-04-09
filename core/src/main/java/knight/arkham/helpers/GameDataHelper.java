@@ -1,6 +1,5 @@
 package knight.arkham.helpers;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 import java.io.*;
@@ -43,19 +42,44 @@ public class GameDataHelper {
 
             String position = playerData.nextLine();
 
-            Gdx.app.log("pos", position);
+            int valueStartingIndex = getValueStartingIndex(position);
 
-            int lastCharacter = position.length();
+            int lastCharacterIndex = position.length();
+
+            float dataValue = Float.parseFloat(position.substring(valueStartingIndex, lastCharacterIndex));
 
             if (position.contains("Player1:"))
-                savedScore.x = Float.parseFloat(position.substring(9, lastCharacter));
+                savedScore.x = dataValue;
 
             else
-                savedScore.y = Float.parseFloat(position.substring(9, lastCharacter));
+                savedScore.y = dataValue;
         }
 
         playerData.close();
 
         return savedScore;
+    }
+
+    private static char[] convertStringToCharArray(String content) {
+
+        char[] items = new char[content.length()];
+
+        for (int i = 0; i < content.length(); i++)
+            items[i] = content.charAt(i);
+
+        return items;
+    }
+
+    private static int getValueStartingIndex(String content) {
+
+        char[] items = convertStringToCharArray(content);
+
+        for (int index = 0; index < items.length; index++){
+
+            if (items[index] == ' ')
+                return index + 1;
+        }
+
+        return 0;
     }
 }

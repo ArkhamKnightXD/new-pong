@@ -138,13 +138,14 @@ public class GameScreen extends ScreenAdapter {
 
     private void manageGameData() {
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F2))
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F4))
             GameDataHelper.savePlayerData("Player1: " + player.score+ "\n" + "Player2: " + enemy.score, GAME_DATA_FILENAME);
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F4))
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F2))
             GameDataPreferencesHelper.saveGameData(player.score, enemy.score);
     }
 
+//    Todo me da error a la hora de volver al MainMenuScreen
     private void setGameOverScreen() {
 
         if (player.score > 10)

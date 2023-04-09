@@ -1,2 +1,2 @@
 Player1: 3
-Player2: 1
+Player2: 4
