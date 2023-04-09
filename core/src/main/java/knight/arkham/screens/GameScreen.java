@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import knight.arkham.Pong;
 import knight.arkham.helpers.GameContactListener;
 import knight.arkham.helpers.GameDataHelper;
+import knight.arkham.helpers.GameDataPreferencesHelper;
 import knight.arkham.objects.Ball;
 import knight.arkham.objects.Enemy;
 import knight.arkham.objects.Player;
@@ -58,10 +59,12 @@ public class GameScreen extends ScreenAdapter {
         enemy = new Enemy(new Rectangle(1430,600, 16, 64), world);
 
         if (!isNewGame){
-            Vector2 playerScores = GameDataHelper.loadPlayerData(GAME_DATA_FILENAME);
+//            Vector2 playerScores = GameDataHelper.loadPlayerData(GAME_DATA_FILENAME);
+//
+//            player.score = (int) playerScores.x;
+//            enemy.score = (int) playerScores.y;
 
-            player.score = (int) playerScores.x;
-            enemy.score = (int) playerScores.y;
+            GameDataPreferencesHelper.loadGameData(player, enemy);
         }
 
         ball = new Ball(new Rectangle(1000,600, 32, 32), this);
@@ -92,22 +95,22 @@ public class GameScreen extends ScreenAdapter {
     }
 
 
-    private void drawScoreNumbers(SpriteBatch batch, int scoreNumber, float x, float y){
+    private void drawScoreNumbers(SpriteBatch batch, int scoreNumber, float x){
 
         final float width = 48;
         final float height = 64;
 
         if (scoreNumber < 10)
-            batch.draw(scoreNumbers[scoreNumber], x/PIXELS_PER_METER, y/PIXELS_PER_METER,
+            batch.draw(scoreNumbers[scoreNumber], x/PIXELS_PER_METER, 900/PIXELS_PER_METER,
                 width/PIXELS_PER_METER , height/PIXELS_PER_METER);
 
         else {
 
             batch.draw(scoreNumbers[Integer.parseInt(("" + scoreNumber).substring(0, 1))], x/PIXELS_PER_METER,
-                y/PIXELS_PER_METER , width/PIXELS_PER_METER , height/PIXELS_PER_METER);
+                900/PIXELS_PER_METER , width/PIXELS_PER_METER , height/PIXELS_PER_METER);
 
             batch.draw(scoreNumbers[Integer.parseInt(("" + scoreNumber).substring(1, 2))], x/PIXELS_PER_METER +20/PIXELS_PER_METER,
-                y/PIXELS_PER_METER, width/PIXELS_PER_METER, height/PIXELS_PER_METER);
+                900/PIXELS_PER_METER, width/PIXELS_PER_METER, height/PIXELS_PER_METER);
         }
     }
 
@@ -137,6 +140,9 @@ public class GameScreen extends ScreenAdapter {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.F2))
             GameDataHelper.savePlayerData("Player1: " + player.score+ "\n" + "Player2: " + enemy.score, GAME_DATA_FILENAME);
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F4))
+            GameDataPreferencesHelper.saveGameData(player.score, enemy.score);
     }
 
     private void setGameOverScreen() {
@@ -163,9 +169,9 @@ public class GameScreen extends ScreenAdapter {
         topWall.draw(game.batch);
 
 //        El orden importa debido a que draw esta después de top-wall, este se renderizara encima de él y no detrás
-        drawScoreNumbers(game.batch, player.score, 500 , 900);
+        drawScoreNumbers(game.batch, player.score, 500);
 
-        drawScoreNumbers(game.batch, enemy.score, 1380 , 900);
+        drawScoreNumbers(game.batch, enemy.score, 1380);
 
         bottomWall.draw(game.batch);
 

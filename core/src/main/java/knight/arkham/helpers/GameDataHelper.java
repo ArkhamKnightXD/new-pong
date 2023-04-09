@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import java.io.*;
 import java.util.Scanner;
 
+
 public class GameDataHelper {
 
     public static void savePlayerData(String playerData, String filenameToSave){
