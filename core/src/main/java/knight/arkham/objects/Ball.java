@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import knight.arkham.helpers.Box2DBody;
 import knight.arkham.helpers.ContactType;
 import knight.arkham.screens.GameScreen;
@@ -19,10 +18,8 @@ public class Ball extends GameObject {
 
 //  Le doy poca densidad, pues si le doy 1 esta empujará a mi player y enemy de lugar
         super(
-            new Box2DBody(
-                rectangle, BodyDef.BodyType.DynamicBody, 0.1f,
-                gameScreen.getWorld(), ContactType.BALL
-            ), "images/white.png", 6
+            new Box2DBody(rectangle, 0.1f, gameScreen.getWorld(), ContactType.BALL),
+            "images/white.png", 6
         );
 
         this.gameScreen = gameScreen;

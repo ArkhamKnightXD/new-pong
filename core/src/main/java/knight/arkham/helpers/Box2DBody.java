@@ -12,10 +12,10 @@ public class Box2DBody {
     public World world;
     public ContactType contactType;
 
-    public Box2DBody(Rectangle bounds, BodyDef.BodyType bodyType, float density, World world, ContactType contactType) {
+    public Box2DBody(Rectangle bounds, float density, World world, ContactType contactType) {
 
         this.bounds = bounds;
-        this.bodyType = bodyType;
+        this.bodyType = density > 0 ? BodyDef.BodyType.DynamicBody : BodyDef.BodyType.StaticBody;
         this.density = density;
         this.world = world;
         this.contactType = contactType;
