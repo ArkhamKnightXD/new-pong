@@ -84,26 +84,6 @@ public class GameScreen extends ScreenAdapter {
     }
 
 
-    private void drawScoreNumbers(SpriteBatch batch, int scoreNumber, float x){
-
-        final float width = 48;
-        final float height = 64;
-
-        if (scoreNumber < 10)
-            batch.draw(scoreNumbers[scoreNumber], x/PIXELS_PER_METER, 900/PIXELS_PER_METER,
-                width/PIXELS_PER_METER , height/PIXELS_PER_METER);
-
-        else {
-
-            batch.draw(scoreNumbers[Integer.parseInt(("" + scoreNumber).substring(0, 1))], x/PIXELS_PER_METER,
-                900/PIXELS_PER_METER , width/PIXELS_PER_METER , height/PIXELS_PER_METER);
-
-            batch.draw(scoreNumbers[Integer.parseInt(("" + scoreNumber).substring(1, 2))], x/PIXELS_PER_METER +20/PIXELS_PER_METER,
-                900/PIXELS_PER_METER, width/PIXELS_PER_METER, height/PIXELS_PER_METER);
-        }
-    }
-
-
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
@@ -146,6 +126,11 @@ public class GameScreen extends ScreenAdapter {
 
         update();
 
+        draw();
+    }
+
+    private void draw() {
+
         ScreenUtils.clear(0,0,0,0);
 
         game.batch.setProjectionMatrix(camera.combined);
@@ -166,6 +151,25 @@ public class GameScreen extends ScreenAdapter {
         enemy.draw(game.batch);
 
         game.batch.end();
+    }
+
+    private void drawScoreNumbers(SpriteBatch batch, int scoreNumber, float x){
+
+        final float width = 48;
+        final float height = 64;
+
+        if (scoreNumber < 10)
+            batch.draw(scoreNumbers[scoreNumber], x/PIXELS_PER_METER, 900/PIXELS_PER_METER,
+                width/PIXELS_PER_METER , height/PIXELS_PER_METER);
+
+        else {
+
+            batch.draw(scoreNumbers[Integer.parseInt(("" + scoreNumber).substring(0, 1))], x/PIXELS_PER_METER,
+                900/PIXELS_PER_METER , width/PIXELS_PER_METER , height/PIXELS_PER_METER);
+
+            batch.draw(scoreNumbers[Integer.parseInt(("" + scoreNumber).substring(1, 2))], x/PIXELS_PER_METER +20/PIXELS_PER_METER,
+                900/PIXELS_PER_METER, width/PIXELS_PER_METER, height/PIXELS_PER_METER);
+        }
     }
 
     @Override
