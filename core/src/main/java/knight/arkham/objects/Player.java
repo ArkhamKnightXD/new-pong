@@ -9,22 +9,16 @@ import knight.arkham.helpers.Box2DBody;
 import knight.arkham.helpers.ContactType;
 
 public class Player extends GameObject {
-
     private float velocityY;
-
-    private final float speed;
-
     public int score;
-
 
     public Player(Rectangle rectangle, World world) {
         super(
             new Box2DBody(
                 rectangle, BodyDef.BodyType.DynamicBody,
                 10, world, ContactType.PLAYER
-            ), "images/players.png"
+            ), "images/players.png", 10
         );
-        speed = 10;
         score = 0;
     }
 
@@ -38,7 +32,7 @@ public class Player extends GameObject {
 
 //        indicar velocidad lineal es otra forma de dar movimiento a un objeto o player, dependiendo del contexto,
 //        esta forma es mejor que aplicar impulso lineal
-        body.setLinearVelocity(0, velocityY * speed);
+        body.setLinearVelocity(0, velocityY * actualSpeed);
 
 //        Debo de setear la velocidad en 0 para que el objeto se detenga cuando dejo de presionar los botones.
         velocityY = 0;

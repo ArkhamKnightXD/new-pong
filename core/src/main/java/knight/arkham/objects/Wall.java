@@ -14,7 +14,7 @@ public class Wall extends GameObject {
                 new Box2DBody(
                     rectangle, BodyDef.BodyType.StaticBody,
                     0, world, ContactType.WALL
-                ), "images/wall.png"
+                ), "images/wall.png", 0
         );
     }
 }

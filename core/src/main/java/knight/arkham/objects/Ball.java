@@ -13,9 +13,7 @@ import static knight.arkham.helpers.Constants.*;
 
 public class Ball extends GameObject {
     private final Vector2 velocity;
-    private final float speed;
-    private final GameScreen actualGameScreen;
-
+    private final GameScreen gameScreen;
 
     public Ball(Rectangle rectangle, GameScreen gameScreen) {
 
@@ -24,12 +22,11 @@ public class Ball extends GameObject {
             new Box2DBody(
                 rectangle, BodyDef.BodyType.DynamicBody, 0.1f,
                 gameScreen.getWorld(), ContactType.BALL
-            ), "images/white.png"
+            ), "images/white.png", 6
         );
 
+        this.gameScreen = gameScreen;
         velocity = new Vector2(getRandomDirection(), getRandomDirection());
-        speed = 6;
-        actualGameScreen = gameScreen;
     }
 
     private float getRandomDirection(){
@@ -45,15 +42,15 @@ public class Ball extends GameObject {
 
     public void update(){
 
-        body.setLinearVelocity(velocity.x * speed, velocity.y * speed);
+        body.setLinearVelocity(velocity.x * actualSpeed, velocity.y * actualSpeed);
 
         if (getPixelPosition().x > 1450){
-            actualGameScreen.getPlayer().score += 1;
+            gameScreen.getPlayer().score += 1;
             resetBallPosition();
         }
 
         if (getPixelPosition().x < 470){
-            actualGameScreen.getEnemy().score += 1;
+            gameScreen.getEnemy().score += 1;
             resetBallPosition();
         }
 

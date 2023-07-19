@@ -12,13 +12,15 @@ import static knight.arkham.helpers.Constants.PIXELS_PER_METER;
 
 public abstract class GameObject {
     protected final Body body;
+    protected float actualSpeed;
     private final Rectangle bounds;
     private final Texture sprite;
 
-    protected GameObject(Box2DBody gameObjectStructure, String spritePath) {
+    protected GameObject(Box2DBody gameObjectStructure, String spritePath, float speed) {
         body = Box2DHelper.createBody(gameObjectStructure);
         bounds = gameObjectStructure.bounds;
         sprite = new Texture(spritePath);
+        actualSpeed = speed;
     }
 
     private Rectangle getBoundsWithPPMCalculation() {

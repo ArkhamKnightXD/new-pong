@@ -10,18 +10,15 @@ import knight.arkham.helpers.ContactType;
 
 public class Enemy extends GameObject {
     private float velocityY;
-    private final float speed;
     public int score;
-
 
     public Enemy(Rectangle rectangle, World world) {
         super(
             new Box2DBody(
                 rectangle, BodyDef.BodyType.DynamicBody,
                 10, world, ContactType.PLAYER
-            ), "images/players.png"
+            ), "images/players.png", 10
         );
-        speed = 10;
         score = 0;
     }
 
@@ -33,7 +30,7 @@ public class Enemy extends GameObject {
         else if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
             velocityY = -1.5f;
 
-        body.setLinearVelocity(0, velocityY * speed);
+        body.setLinearVelocity(0, velocityY * actualSpeed);
 
         velocityY = 0;
     }
