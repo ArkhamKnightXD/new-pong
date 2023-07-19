@@ -6,7 +6,7 @@ import static knight.arkham.helpers.Constants.PIXELS_PER_METER;
 
 public class Box2DHelper {
 
-    public static Fixture createBody(Box2DBody box2DBody) {
+    public static Body createBody(Box2DBody box2DBody) {
 
         PolygonShape shape = new PolygonShape();
 
@@ -15,20 +15,15 @@ public class Box2DHelper {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
 
-
         fixtureDef.density = box2DBody.density;
 
         Body body = createBox2DBodyByType(box2DBody);
 
-        Fixture fixture = body.createFixture(fixtureDef);
-
-        fixture.setUserData(box2DBody.contactType);
+        body.createFixture(fixtureDef).setUserData(box2DBody.contactType);
 
         shape.dispose();
 
-//        Tiene más utilidad tener el fixture, pues este contiene el body y
-//        más propiedades para modificar como por ejemplo la friction
-        return fixture;
+        return body;
     }
 
     private static Body createBox2DBodyByType(Box2DBody box2DBody) {

@@ -2,8 +2,6 @@ package knight.arkham.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
@@ -21,8 +19,10 @@ public class Player extends GameObject {
 
     public Player(Rectangle rectangle, World world) {
         super(
-            new Box2DBody(rectangle, BodyDef.BodyType.DynamicBody, 10, world, ContactType.PLAYER),
-            new TextureRegion(new Texture("images/players.png"))
+            new Box2DBody(
+                rectangle, BodyDef.BodyType.DynamicBody,
+                10, world, ContactType.PLAYER
+            ), "images/players.png"
         );
         speed = 10;
         score = 0;

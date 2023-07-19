@@ -2,8 +2,6 @@ package knight.arkham.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -22,10 +20,12 @@ public class Ball extends GameObject {
 
     public Ball(Rectangle rectangle, GameScreen gameScreen) {
 
+//  Le doy poca densidad, pues si le doy 1 esta empujará a mi player y enemy de lugar
         super(
-//            Le doy poca densidad, pues si le doy 1 esta empujará a mi player y enemy de lugar
-            new Box2DBody(rectangle, BodyDef.BodyType.DynamicBody, 0.1f, gameScreen.getWorld(), ContactType.BALL),
-            new TextureRegion(new Texture("images/white.png"))
+            new Box2DBody(
+                rectangle, BodyDef.BodyType.DynamicBody, 0.1f,
+                gameScreen.getWorld(), ContactType.BALL
+            ), "images/white.png"
         );
 
         velocity = new Vector2(getRandomDirection(), getRandomDirection());

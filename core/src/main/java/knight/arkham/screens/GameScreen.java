@@ -16,12 +16,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import knight.arkham.Pong;
 import knight.arkham.helpers.GameContactListener;
-import knight.arkham.helpers.GameDataHelper;
 import knight.arkham.helpers.GameDataPreferencesHelper;
 import knight.arkham.objects.Ball;
 import knight.arkham.objects.Enemy;
 import knight.arkham.objects.Player;
-import knight.arkham.objects.StaticStructure;
+import knight.arkham.objects.Wall;
 
 import static knight.arkham.helpers.Constants.*;
 import static knight.arkham.helpers.Constants.BOX2D_FULL_SCREEN_HEIGHT;
@@ -31,18 +30,14 @@ public class GameScreen extends ScreenAdapter {
     private final Pong game;
     private final Player player;
     private final Enemy enemy;
-
     private final Ball ball;
-    private final StaticStructure bottomWall;
-    private final StaticStructure topWall;
+    private final Wall bottomWall;
+    private final Wall topWall;
     private final OrthographicCamera camera;
-
     private final Viewport viewport;
     private final World world;
     private final TextureRegion[] scoreNumbers;
-    private final Music gameMusic;
-
-    public static final String GAME_DATA_FILENAME = "pong-players";
+    private final Music music;
 
 
     public GameScreen(boolean isNewGame) {
@@ -58,19 +53,13 @@ public class GameScreen extends ScreenAdapter {
         player = new Player(new Rectangle(490, 600, 16, 64), world);
         enemy = new Enemy(new Rectangle(1430,600, 16, 64), world);
 
-        if (!isNewGame){
-//            Vector2 playerScores = GameDataHelper.loadPlayerData(GAME_DATA_FILENAME);
-//
-//            player.score = (int) playerScores.x;
-//            enemy.score = (int) playerScores.y;
-
+        if (!isNewGame)
             GameDataPreferencesHelper.loadGameData(player, enemy);
-        }
 
         ball = new Ball(new Rectangle(1000,600, 32, 32), this);
 
-        topWall = new StaticStructure(new Rectangle(FULL_SCREEN_WIDTH,930, FULL_SCREEN_WIDTH, 64), world);
-        bottomWall = new StaticStructure(new Rectangle(FULL_SCREEN_WIDTH,350, FULL_SCREEN_WIDTH, 64), world);
+        topWall = new Wall(new Rectangle(FULL_SCREEN_WIDTH,930, FULL_SCREEN_WIDTH, 64), world);
+        bottomWall = new Wall(new Rectangle(FULL_SCREEN_WIDTH,350, FULL_SCREEN_WIDTH, 64), world);
 
         camera = new OrthographicCamera();
 
@@ -80,11 +69,11 @@ public class GameScreen extends ScreenAdapter {
 
         scoreNumbers = loadTextureSprite();
 
-        gameMusic = Gdx.audio.newMusic(Gdx.files.internal("music/epic.wav"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("music/epic.wav"));
 
-        gameMusic.play();
-        gameMusic.setLooping(true);
-        gameMusic.setVolume(0.5f);
+        music.play();
+        music.setLooping(true);
+        music.setVolume(0.5f);
     }
 
     private TextureRegion[] loadTextureSprite(){
@@ -117,7 +106,6 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void resize(int width, int height) {
-
         viewport.update(width, height);
     }
 
@@ -137,9 +125,6 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void manageGameData() {
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F4))
-            GameDataHelper.savePlayerData("Player1: " + player.score+ "\n" + "Player2: " + enemy.score, GAME_DATA_FILENAME);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.F2))
             GameDataPreferencesHelper.saveGameData(player.score, enemy.score);
@@ -192,12 +177,12 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void dispose() {
 
-        topWall.getSprite().dispose();
-        bottomWall.getSprite().dispose();
-        player.getSprite().dispose();
-        ball.getSprite().dispose();
-        enemy.getSprite().dispose();
-        gameMusic.dispose();
+        topWall.dispose();
+        bottomWall.dispose();
+        player.dispose();
+        ball.dispose();
+        enemy.dispose();
+        music.dispose();
     }
 
     public Ball getBall() {return ball;}

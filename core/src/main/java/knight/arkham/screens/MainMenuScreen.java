@@ -37,14 +37,4 @@ public class MainMenuScreen extends ScreenAdapter {
         else if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
             game.setScreen(new GameScreen(false));
     }
-
-    @Override
-    public void hide() {
-        dispose();
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 }

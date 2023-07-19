@@ -2,7 +2,6 @@ package knight.arkham.objects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -12,15 +11,14 @@ import knight.arkham.helpers.Box2DHelper;
 import static knight.arkham.helpers.Constants.PIXELS_PER_METER;
 
 public abstract class GameObject {
-
     protected final Body body;
     private final Rectangle bounds;
-    private final TextureRegion actualRegion;
+    private final Texture sprite;
 
-    protected GameObject(Box2DBody gameObjectStructure, TextureRegion region) {
-        body = Box2DHelper.createBody(gameObjectStructure).getBody();
+    protected GameObject(Box2DBody gameObjectStructure, String spritePath) {
+        body = Box2DHelper.createBody(gameObjectStructure);
         bounds = gameObjectStructure.bounds;
-        actualRegion = region;
+        sprite = new Texture(spritePath);
     }
 
     private Rectangle getBoundsWithPPMCalculation() {
@@ -37,15 +35,12 @@ public abstract class GameObject {
 
         Rectangle actualBounds = getBoundsWithPPMCalculation();
 
-        batch.draw(actualRegion, actualBounds.x, actualBounds.y, actualBounds.width, actualBounds.height);
+        batch.draw(sprite, actualBounds.x, actualBounds.y, actualBounds.width, actualBounds.height);
     }
 
     protected Vector2 getActualPosition() {
-
         return new Vector2(body.getPosition().x * PIXELS_PER_METER, body.getPosition().y * PIXELS_PER_METER);
     }
 
-    public Texture getSprite() {
-        return actualRegion.getTexture();
-    }
+    public void dispose() {sprite.dispose();}
 }
