@@ -14,7 +14,6 @@ import static knight.arkham.helpers.Constants.*;
 public class Ball extends GameObject {
     private final Vector2 velocity;
     private final float speed;
-
     private final GameScreen actualGameScreen;
 
 
@@ -48,12 +47,12 @@ public class Ball extends GameObject {
 
         body.setLinearVelocity(velocity.x * speed, velocity.y * speed);
 
-        if (getActualPosition().x > 1450){
+        if (getPixelPosition().x > 1450){
             actualGameScreen.getPlayer().score += 1;
             resetBallPosition();
         }
 
-        if (getActualPosition().x < 470){
+        if (getPixelPosition().x < 470){
             actualGameScreen.getEnemy().score += 1;
             resetBallPosition();
         }

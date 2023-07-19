@@ -11,9 +11,8 @@ public class Pong extends Game {
     public static Pong INSTANCE;
     public SpriteBatch batch;
     public BitmapFont font;
-
-    private int screenWidth;
-    private int screenHeight;
+    public int screenWidth;
+    public int screenHeight;
 
     public Pong() {
 
@@ -38,8 +37,4 @@ public class Pong extends Game {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             Gdx.app.exit();
     }
-
-    public int getScreenWidth() { return screenWidth; }
-
-    public int getScreenHeight() { return screenHeight; }
 }
