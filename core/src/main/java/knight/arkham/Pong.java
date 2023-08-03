@@ -3,14 +3,12 @@ package knight.arkham;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import knight.arkham.screens.MainMenuScreen;
 
 public class Pong extends Game {
     public static Pong INSTANCE;
     public SpriteBatch batch;
-    public BitmapFont font;
     public int screenWidth;
     public int screenHeight;
 
@@ -26,7 +24,6 @@ public class Pong extends Game {
         screenHeight = Gdx.graphics.getHeight();
 
         batch = new SpriteBatch();
-        font = new BitmapFont();
 
         setScreen(new MainMenuScreen());
     }

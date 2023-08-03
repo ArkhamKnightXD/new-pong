@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,8 +16,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import knight.arkham.Pong;
+import knight.arkham.helpers.AssetsHelper;
 import knight.arkham.helpers.GameContactListener;
-import knight.arkham.helpers.GameDataPreferencesHelper;
+import knight.arkham.helpers.GameDataHelper;
 import knight.arkham.objects.Ball;
 import knight.arkham.objects.Enemy;
 import knight.arkham.objects.Player;
@@ -38,6 +40,7 @@ public class GameScreen extends ScreenAdapter {
     private final World world;
     private final TextureRegion[] scoreNumbers;
     private final Music music;
+    private final Sound winSound;
 
 
     public GameScreen(boolean isNewGame) {
@@ -54,7 +57,7 @@ public class GameScreen extends ScreenAdapter {
         enemy = new Enemy(new Rectangle(1430,600, 16, 64), world);
 
         if (!isNewGame)
-            GameDataPreferencesHelper.loadGameData(player, enemy);
+            GameDataHelper.loadGameData(player, enemy);
 
         ball = new Ball(new Rectangle(1000,600, 32, 32), this);
 
@@ -69,11 +72,13 @@ public class GameScreen extends ScreenAdapter {
 
         scoreNumbers = loadTextureSprite();
 
-        music = Gdx.audio.newMusic(Gdx.files.internal("music/epic.wav"));
+        music = AssetsHelper.loadMusic("epic.wav");
 
         music.play();
         music.setLooping(true);
         music.setVolume(0.5f);
+
+        winSound = AssetsHelper.loadSound("win.wav");
     }
 
     private TextureRegion[] loadTextureSprite(){
@@ -107,17 +112,16 @@ public class GameScreen extends ScreenAdapter {
     private void manageGameData() {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.F2))
-            GameDataPreferencesHelper.saveGameData(player.score, enemy.score);
+            GameDataHelper.saveGameData(player.score, enemy.score);
     }
 
-//    Todo me da error a la hora de volver al MainMenuScreen
     private void setGameOverScreen() {
 
-        if (player.score > 10)
-            game.setScreen(new MainMenuScreen());
+        if (player.score > 4 || enemy.score > 4){
 
-        else if (enemy.score > 10)
+            winSound.play();
             game.setScreen(new MainMenuScreen());
+        }
     }
 
 

@@ -5,7 +5,7 @@ import com.badlogic.gdx.Preferences;
 import knight.arkham.objects.Enemy;
 import knight.arkham.objects.Player;
 
-public class GameDataPreferencesHelper {
+public class GameDataHelper {
 
     public static void saveGameData(int player1Score, int player2Score){
 
