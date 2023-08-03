@@ -20,7 +20,6 @@ import knight.arkham.helpers.AssetsHelper;
 import knight.arkham.helpers.GameContactListener;
 import knight.arkham.helpers.GameDataHelper;
 import knight.arkham.objects.Ball;
-import knight.arkham.objects.Enemy;
 import knight.arkham.objects.Player;
 import knight.arkham.objects.Wall;
 
@@ -31,7 +30,7 @@ public class GameScreen extends ScreenAdapter {
 
     private final Pong game;
     private final Player player;
-    private final Enemy enemy;
+    private final Player enemy;
     private final Ball ball;
     private final Wall bottomWall;
     private final Wall topWall;
@@ -53,8 +52,8 @@ public class GameScreen extends ScreenAdapter {
 
         world.setContactListener(contactListener);
 
-        player = new Player(new Rectangle(490, 600, 16, 64), world);
-        enemy = new Enemy(new Rectangle(1430,600, 16, 64), world);
+        player = new Player(new Rectangle(490, 600, 16, 64), world, true);
+        enemy = new Player(new Rectangle(1430,600, 16, 64), world, false);
 
         if (!isNewGame)
             GameDataHelper.loadGameData(player, enemy);
@@ -76,7 +75,7 @@ public class GameScreen extends ScreenAdapter {
 
         music.play();
         music.setLooping(true);
-        music.setVolume(0.5f);
+        music.setVolume(0.3f);
 
         winSound = AssetsHelper.loadSound("win.wav");
     }
@@ -197,7 +196,7 @@ public class GameScreen extends ScreenAdapter {
 
     public Player getPlayer() {return player;}
 
-    public Enemy getEnemy() {return enemy;}
+    public Player getEnemy() {return enemy;}
 
     public World getWorld() {return world;}
 }

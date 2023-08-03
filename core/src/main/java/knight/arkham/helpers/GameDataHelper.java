@@ -2,7 +2,6 @@ package knight.arkham.helpers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import knight.arkham.objects.Enemy;
 import knight.arkham.objects.Player;
 
 public class GameDataHelper {
@@ -17,7 +16,7 @@ public class GameDataHelper {
         preferences.flush();
     }
 
-    public static void loadGameData(Player player, Enemy enemy){
+    public static void loadGameData(Player player, Player enemy){
 
         Preferences preferences = Gdx.app.getPreferences("pong-data");
 
