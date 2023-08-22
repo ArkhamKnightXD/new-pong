@@ -13,8 +13,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import knight.arkham.Pong;
 import knight.arkham.helpers.AssetsHelper;
 import knight.arkham.helpers.GameContactListener;
@@ -24,10 +22,8 @@ import knight.arkham.objects.Player;
 import knight.arkham.objects.Wall;
 
 import static knight.arkham.helpers.Constants.*;
-import static knight.arkham.helpers.Constants.BOX2D_FULL_SCREEN_HEIGHT;
 
 public class GameScreen extends ScreenAdapter {
-
     private final Pong game;
     private final Player player;
     private final Player enemy;
@@ -35,16 +31,16 @@ public class GameScreen extends ScreenAdapter {
     private final Wall bottomWall;
     private final Wall topWall;
     private final OrthographicCamera camera;
-    private final Viewport viewport;
     private final World world;
     private final TextureRegion[] scoreNumbers;
     private final Music music;
     private final Sound winSound;
 
-
     public GameScreen(boolean isNewGame) {
 
         game = Pong.INSTANCE;
+
+        camera = game.camera;
 
         world = new World(new Vector2(0, 0), true);
 
@@ -58,16 +54,10 @@ public class GameScreen extends ScreenAdapter {
         if (!isNewGame)
             GameDataHelper.loadGameData(player, enemy);
 
-        ball = new Ball(new Rectangle(1000,600, 32, 32), this);
+        ball = new Ball(new Rectangle(1000,600, 20, 20), this);
 
-        topWall = new Wall(new Rectangle(FULL_SCREEN_WIDTH,930, FULL_SCREEN_WIDTH, 64), world);
-        bottomWall = new Wall(new Rectangle(FULL_SCREEN_WIDTH,350, FULL_SCREEN_WIDTH, 64), world);
-
-        camera = new OrthographicCamera();
-
-        viewport = new FitViewport(BOX2D_FULL_SCREEN_WIDTH, BOX2D_FULL_SCREEN_HEIGHT, camera);
-
-        camera.position.set(BOX2D_FULL_SCREEN_WIDTH, BOX2D_FULL_SCREEN_HEIGHT, 0);
+        topWall = new Wall(new Rectangle(game.screenWidth,930, game.screenWidth, 64), world);
+        bottomWall = new Wall(new Rectangle(game.screenWidth,350, game.screenWidth, 64), world);
 
         scoreNumbers = loadTextureSprite();
 
@@ -90,7 +80,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+        game.viewport.update(width, height);
     }
 
     private void update(){

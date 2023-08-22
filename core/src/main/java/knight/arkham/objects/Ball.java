@@ -19,7 +19,7 @@ public class Ball extends GameObject {
 //  Le doy poca densidad, pues si le doy 1 esta empujará a mi player y enemy de lugar
         super(
             new Box2DBody(rectangle, 0.1f, gameScreen.getWorld(), ContactType.BALL),
-            "images/white.png", 6
+            "images/white.png", 7
         );
 
         this.gameScreen = gameScreen;
