@@ -8,7 +8,6 @@ import knight.arkham.helpers.Box2DBody;
 import knight.arkham.helpers.ContactType;
 
 public class Player extends GameObject {
-
     private final boolean isPlayer1;
     private float velocityY;
     public int score;

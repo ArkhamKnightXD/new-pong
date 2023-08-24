@@ -55,6 +55,10 @@ public class Ball extends GameObject {
             resetBallPosition();
     }
 
+    private Vector2 getPixelPosition() {
+        return new Vector2(body.getPosition().x * PIXELS_PER_METER, body.getPosition().y * PIXELS_PER_METER);
+    }
+
     public void reverseVelocityX(){
         velocity.x *= -1;
     }
