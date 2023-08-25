@@ -36,7 +36,12 @@ public class GameScreen extends ScreenAdapter {
     private final Music music;
     private final Sound winSound;
 
+    private float accumulator;
+    private final float TIME_STEP;
+
     public GameScreen(boolean isNewGame) {
+
+        TIME_STEP = 1/300f;
 
         game = Pong.INSTANCE;
 
@@ -83,9 +88,16 @@ public class GameScreen extends ScreenAdapter {
         game.viewport.update(width, height);
     }
 
-    private void update(){
+    private void update(float delta){
 
-        world.step(1 / 60f, 6, 2);
+        if (delta > 0.25){
+            delta = 0.25f;
+        }
+        accumulator += delta;
+        while(accumulator >= TIME_STEP){
+            world.step(TIME_STEP, 8,3); // Recomended by libgdx (8,3)
+            accumulator -= TIME_STEP;
+        }
 
         player.update();
         enemy.update();
@@ -117,7 +129,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
 
-        update();
+        update(delta);
 
         draw();
     }
