@@ -41,11 +41,11 @@ public class GameScreen extends ScreenAdapter {
 
     public GameScreen(boolean isNewGame) {
 
-        TIME_STEP = 1/300f;
-
         game = Pong.INSTANCE;
 
         camera = game.camera;
+
+        TIME_STEP = 1/240f;
 
         world = new World(new Vector2(0, 0), true);
 
@@ -88,16 +88,7 @@ public class GameScreen extends ScreenAdapter {
         game.viewport.update(width, height);
     }
 
-    private void update(float delta){
-
-        if (delta > 0.25){
-            delta = 0.25f;
-        }
-        accumulator += delta;
-        while(accumulator >= TIME_STEP){
-            world.step(TIME_STEP, 8,3); // Recomended by libgdx (8,3)
-            accumulator -= TIME_STEP;
-        }
+    private void update(){
 
         player.update();
         enemy.update();
@@ -127,12 +118,31 @@ public class GameScreen extends ScreenAdapter {
 
 
     @Override
-    public void render(float delta) {
+    public void render(float deltaTime) {
 
-        update(delta);
+        update();
 
         draw();
+
+//        It is recommended that you render all your graphics before you do your physics step,
+//        otherwise it will be out of sync.
+        calculatePhysicsTimeStep(deltaTime);
     }
+
+    private void calculatePhysicsTimeStep(float deltaTime) {
+
+        // max frame time to avoid spiral of death (on slow devices)
+        float frameTime = Math.min(deltaTime, 0.25f);
+
+        accumulator += frameTime;
+
+        // fixed time step
+        while(accumulator >= TIME_STEP) {
+            world.step(TIME_STEP, 6,2);
+            accumulator -= TIME_STEP;
+        }
+    }
+
 
     private void draw() {
 
