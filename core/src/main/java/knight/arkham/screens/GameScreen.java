@@ -132,12 +132,18 @@ public class GameScreen extends ScreenAdapter {
     private void calculatePhysicsTimeStep(float deltaTime) {
 
         // max frame time to avoid spiral of death (on slow devices)
+        //The minimum frame that my game can have if 0.25.
+        // This means that the game is running at 4 fps, and for avoid the spiral of death
+        // I have to cap to this minimum fps if the device can't run the game with a performance above 4 fps.
         float frameTime = Math.min(deltaTime, 0.25f);
 
         accumulator += frameTime;
 
-        // fixed time step
+        // fixed time step. This while loop gives a more stable simulation independent of the frame rate of the screen.
+        //And the performance that the devices could have. This loop avoid that the step are calculated every frame.
+//      // Instead, the step are going to be calculated while the condition is true.
         while(accumulator >= TIME_STEP) {
+
             world.step(TIME_STEP, 6,2);
             accumulator -= TIME_STEP;
         }
