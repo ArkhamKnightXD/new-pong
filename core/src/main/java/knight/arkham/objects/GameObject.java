@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import knight.arkham.helpers.Box2DBody;
 import knight.arkham.helpers.Box2DHelper;
 
@@ -14,12 +15,15 @@ public abstract class GameObject {
     protected float actualSpeed;
     private final Rectangle bounds;
     private final Texture sprite;
+    private Rectangle drawBounds;
 
     protected GameObject(Box2DBody gameObjectStructure, String spritePath, float speed) {
         body = Box2DHelper.createBody(gameObjectStructure);
         bounds = gameObjectStructure.bounds;
         sprite = new Texture(spritePath);
         actualSpeed = speed;
+
+        drawBounds = getDrawBounds();
     }
 
     private Rectangle getDrawBounds() {
@@ -34,7 +38,8 @@ public abstract class GameObject {
 
     public void draw(Batch batch) {
 
-        Rectangle drawBounds = getDrawBounds();
+        if(body.getType() != BodyDef.BodyType.StaticBody)
+            drawBounds = getDrawBounds();
 
         batch.draw(sprite, drawBounds.x, drawBounds.y, drawBounds.width, drawBounds.height);
     }

@@ -18,7 +18,6 @@ public class Player extends GameObject {
             "images/players.png", 10
         );
         this.isPlayer1 = isPlayer1;
-        score = 0;
     }
 
     public void update() {
